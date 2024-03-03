@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Link , useNavigate} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { delete_Expense } from '../ReduxStore/Slices/expenseSlice';
@@ -12,9 +12,17 @@ const ExpenseList = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentTaskId, setCurrentTaskId] = useState(null);
+  const [premium,setPremium] = useState(false);
+
+
 
   const expenses = useSelector((state) => state.ExpReducer.expensesArr);
    
+
+  
+
+
+
   console.log(expenses)
    console.log(typeof(expenses))
     const logout =()=>{
@@ -33,6 +41,13 @@ const ExpenseList = () => {
       setCurrentTaskId(id);
     }
 
+    const totalExpense = expenses.reduce((sum, expense)=>sum+Number(expense.amount),0)
+
+   useEffect(()=>{
+    if(totalExpense>10000){
+      setPremium(true)
+     }
+   },[totalExpense])
  
   return (
     <>
@@ -63,6 +78,18 @@ const ExpenseList = () => {
               >
                 User Profile
               </Link>
+
+              {
+                premium && 
+                <Link
+                to="/userprofile"
+                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-purple-500 text-white rounded hover:bg-pink-600"
+              >
+                Activate Premium
+              </Link>
+              }
+
+
               <button
               onClick={logout}
                 className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 mt-2 md:mt-0 shadow-xl bg-blue-500 text-white rounded hover:bg-blue-600"
