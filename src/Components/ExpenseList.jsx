@@ -43,6 +43,22 @@ const ExpenseList = () => {
     }
   }, [totalExpense]);
 
+  const handleDownload = () => {
+    const expensesCsv = expenses.map(row => Object.values(row));
+    expensesCsv.unshift(Object.keys(expenses[0])); // add header row
+  
+    let csvContent = "data:text/csv;charset=utf-8," 
+                    + expensesCsv.map(e => e.join(",")).join("\n");
+      
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "expenses.csv");
+    document.body.appendChild(link);
+  
+    link.click();
+  }
+
   return (
     <>
       <header className="bg-white border-b sticky top-0 z-10 p-4 dark:bg-black dark:text-white">
@@ -139,6 +155,14 @@ const ExpenseList = () => {
             <UpdateTaskPopup taskId={currentTaskId} setIsOpen={setIsOpen} />
           )}
         </div>
+        {
+          premium && <button 
+          onClick={handleDownload} 
+          className="p-2 ml-2 bg-pink-500 text-white rounded hover:bg-blue-600 dark:bg-blue-500  "
+          >Download Your Data</button>
+        }
+        
+      
       </div>
     </>
   );
