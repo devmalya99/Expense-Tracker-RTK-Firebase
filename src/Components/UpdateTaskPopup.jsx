@@ -30,7 +30,7 @@ const UpdateTaskPopup = ({setIsOpen, taskId}) => {
 
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 dark:bg-black dark:text-white">
         <div className="bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg p-5 text-gray-800">
           <h1 className="w-full text-center text-2xl font-semibold py-3">Update Your Expenses</h1>
           <div className="mt-6">

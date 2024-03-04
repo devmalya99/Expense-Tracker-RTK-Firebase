@@ -19,7 +19,7 @@ const UserProfile = () => {
 
   return (
     <div className=''>
-        <header className="bg-white border-b sticky top-0 z-10 p-4">
+        <header className="bg-white border-b sticky top-0 z-10 p-4 dark:bg-black dark:text-white">
         <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-x-2 lg:px-8">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex justify-start items-center w-full md:w-auto">
@@ -57,7 +57,7 @@ const UserProfile = () => {
 
 
 
-      <div className="p-8 bg-gray-200">
+      <div className="p-8 bg-gray-200 dark:bg-black dark:text-white">
       <h1 className="text-2xl font-bold mb-4">Contact Details</h1>
       <form onSubmit={handleProfileUpdate}>
         <div className="mb-4">

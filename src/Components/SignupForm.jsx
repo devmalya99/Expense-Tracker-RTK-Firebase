@@ -32,7 +32,7 @@ const Signup = () => {
     return (
         <>
           <Header/>
-          <section className="bg-white-800 dark:bg-gray-900">
+          <section className="bg-white-800 dark:bg-black dark:text-white">
             <div className="grid grid-cols-2 md:h-screen lg:py-0 px-6 py-8 mx-auto items-center justify-items-center">
               <img className="justify-self-center"
                    src="https://expenseless.netlify.app/static/media/header-cover.feb3609bcec11e31f808.jpg"
