@@ -44,20 +44,25 @@ const ExpenseList = () => {
   }, [totalExpense]);
 
   const handleDownload = () => {
-    const expensesCsv = expenses.map(row => Object.values(row));
-    expensesCsv.unshift(Object.keys(expenses[0])); // add header row
+    let csv = 'title,amount,category\n';
   
-    let csvContent = "data:text/csv;charset=utf-8," 
-                    + expensesCsv.map(e => e.join(",")).join("\n");
-      
-    let encodedUri = encodeURI(csvContent);
-    let link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "expenses.csv");
+    expenses.forEach((expense) => {
+      csv += `${expense.title},${expense.amount},${expense.category}\n`;
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+  
+    const link = document.createElement('a');
+    link.href = url; 
+    link.download = 'expenses.csv';
+    
     document.body.appendChild(link);
   
     link.click();
-  }
+    
+    document.body.removeChild(link);
+  };
 
   return (
     <>
