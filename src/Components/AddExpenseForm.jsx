@@ -5,6 +5,8 @@ import { Link , useNavigate} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import ThemeButton from './Buttons/ThemeButton';
 import { addExpense } from '../ReduxStore/Slices/expenseSlice';
+import LogoutButton from './Buttons/LogoutButton';
+
 const AddExpenseCard = () => {
 
 
@@ -22,12 +24,7 @@ const AddExpenseCard = () => {
     return `${uniqueId}-${Math.random().toString(36).slice(2)}`;
   }
 
-  const logout=()=>{
-    localStorage.removeItem('user')
-    alert('logged out')
-    Navigate('/')
-    
-  }
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -81,12 +78,7 @@ const AddExpenseCard = () => {
               </Link>
 
 
-              <button
-                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 mt-2 md:mt-0 shadow-xl bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={logout}
-              >
-                Logout
-              </button>
+              <LogoutButton/>
             </div>
           </div>
         </div>

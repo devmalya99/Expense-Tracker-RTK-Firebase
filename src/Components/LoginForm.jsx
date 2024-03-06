@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link , useNavigate} from "react-router-dom";
-
+import {FirebaseAuthentication} from '../Firebase/FirebaseConfig'
 import Header from '../Components/Header'
-
+import {signInWithEmailAndPassword} from 'firebase/auth'
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const Navigate = useNavigate();
+
   
 
   const handleFormSubmit = async (e) => {
@@ -15,8 +16,15 @@ const Login = () => {
     if (email.trim() === "" || password.trim() === "") {
       alert("please enter all the fields");
     }
-    localStorage.setItem('user',JSON.stringify(email))
-    console.log("Login successful");
+    try {
+      await signInWithEmailAndPassword(
+        FirebaseAuthentication,email, password)
+    } catch (error) {
+      console.log(error)
+    }
+
+    
+    console.log("Login successful", email, password);
 
     Navigate("/addExpenseCard");
     
@@ -26,7 +34,7 @@ const Login = () => {
 
     <>
     <Header/>
-    <section className="bg-white-800 dark:bg-gray-900 dark:text-white">
+    <section className="bg-white-800">
       <div className="grid grid-cols-2 md:h-screen lg:py-0 px-6 py-8 mx-auto items-center justify-items-center">
         <img className="justify-self-center"
              src="https://expenseless.netlify.app/static/media/header-cover.feb3609bcec11e31f808.jpg"
@@ -100,7 +108,7 @@ const Login = () => {
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full bg-blue-600 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 hover:border-2  "
               >
                 Log in
               </button>
