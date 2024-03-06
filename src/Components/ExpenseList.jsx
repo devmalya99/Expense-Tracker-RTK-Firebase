@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { delete_Expense } from "../ReduxStore/Slices/expenseSlice";
 import UpdateTaskPopup from "./UpdateTaskPopup";
 import ThemeButton from "./Buttons/ThemeButton";
-import { onValue, ref } from "firebase/database";
+import { onValue, ref, remove ,getDatabase } from "firebase/database";
 import {FirebaseAuthentication} from "../Firebase/FirebaseConfig"
-import { getDatabase } from "firebase/database";
+
+import { addExpense } from "../ReduxStore/Slices/expenseSlice";
+
 const ExpenseList = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -19,7 +21,7 @@ const ExpenseList = () => {
   const [expenses, setExpenses] = useState([]);
 
   console.log(expenses);
-  console.log(typeof expenses);
+
   const logout = () => {
     localStorage.removeItem("user");
     alert("logged out");
@@ -27,12 +29,23 @@ const ExpenseList = () => {
   };
 
   const handleDelete = (id) => {
-    dispatch(delete_Expense(id));
+    const db = getDatabase();
+    const userId = FirebaseAuthentication.currentUser.uid;
+    const expenseRef = ref(db, `users/${userId}/expenses/${id}`);
+
+    remove(expenseRef)
+    .then(()=>{
+      alert("Expense Deleted")
+      dispatch(delete_Expense(id));
+    })
+    .catch((console.error()))
+    
   };
 
   const handleEdit = (id) => {
     setIsOpen(true);
     setCurrentTaskId(id);
+    
   };
 
   const totalExpense = expenses.reduce(
@@ -78,16 +91,26 @@ const ExpenseList = () => {
       const data = snapshot.val();
       if(data){
          // Create an array from the returned object for rendering
-         setExpenses(Object.keys(data).map((key) => ({id: key, ...data[key]})));
+         const newExpenses = (Object.keys(data).map((key) => ({id: key, ...data[key]})));
+         setExpenses(newExpenses)
+         console.log("data is ")
+         
 
-      }
+         // dispatch addExpense for each newExpense
+         newExpenses.forEach((expense)=>{
+           dispatch(addExpense(expense))
+         })
+
+        }
       else {
         // If there are no expenses, set expenses to an empty array
         setExpenses([]);
       }
 
     });
-  })
+
+ 
+  },[dispatch])
 
   return (
     <>
@@ -111,12 +134,12 @@ const ExpenseList = () => {
                 Add Expense
               </Link>
 
-              <Link
+              {/* <Link
                 to="/userprofile"
                 className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 User Profile
-              </Link>
+              </Link> */}
 
               {premium && (
                 <Link
@@ -150,6 +173,7 @@ const ExpenseList = () => {
             {Array.isArray(expenses) &&
               expenses.length > 0 && // Check for array and non-empty
               expenses.map((expense) => (
+                
                 <div
                   className="flex border-2 mt-4 border-gray-200 p-5 rounded-md bg-white shadow-sm dark:bg-black dark:text-white"
                   key={expense.id}

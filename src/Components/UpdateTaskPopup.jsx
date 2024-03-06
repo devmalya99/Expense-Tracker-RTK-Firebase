@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useSelector } from "react-redux"
 import { update_Expense } from "../ReduxStore/Slices/expenseSlice"
 import { useDispatch } from "react-redux"
+import { FirebaseAuthentication } from "../Firebase/FirebaseConfig"
+import { set ,getDatabase ,ref } from "firebase/database";
 
 const UpdateTaskPopup = ({setIsOpen, taskId}) => {
  const dispatch = useDispatch()
@@ -12,13 +14,27 @@ const UpdateTaskPopup = ({setIsOpen, taskId}) => {
 
 
     const handleUpdate = () => {
-        dispatch(update_Expense({
-          id:taskId, 
-          title:newExpense, 
-          amount:newAmount, 
-          category:newCategory
-        }))
-        setIsOpen(false);
+      const updatedExpense = {
+        
+        title:newExpense, 
+        amount:newAmount, 
+        category:newCategory
+     };
+
+        dispatch(update_Expense(updatedExpense))
+
+           // Update the Firebase backend
+           const userId = FirebaseAuthentication.currentUser.uid
+           const db = getDatabase();
+           const expenseRef = ref(db, `users/${userId}/expenses/${taskId}`);
+           
+           set(expenseRef , updatedExpense)
+        
+        
+           setIsOpen(false);
+        console.log("update done" )
+        
+
     }
 
    
@@ -69,10 +85,14 @@ const UpdateTaskPopup = ({setIsOpen, taskId}) => {
 
             <button
               onClick={handleUpdate}
-              className="w-full mt-4 bg-blue-500 text-white p-3 rounded hover:bg-blue-400 focus:outline-none focus:shadow-focus-blue active:scale-95"
+              className=" mt-4 bg-blue-500 text-white p-3 rounded hover:bg-blue-400 focus:outline-none focus:shadow-focus-blue active:scale-95"
             >
               Update Expense
             </button>
+            <button
+            className=" mt-4 ml-4 bg-red-500 text-white p-3 rounded hover:bg-blue-400 focus:outline-none focus:shadow-focus-blue active:scale-95" 
+            onClick={() => setIsOpen(false)}
+            >Close</button>
           </div>
         </div>
       </div>

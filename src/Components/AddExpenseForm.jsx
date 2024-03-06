@@ -19,11 +19,7 @@ const AddExpenseCard = () => {
   const [amount, setAmount] = useState('')
   const [category, setCategory] = useState('')
 
-  const generateId = () => {
-    const rawId = `${title}${amount}${category}`;
-    const uniqueId = rawId.replace(/\s+/g, '-').toLowerCase()
-    return `${uniqueId}-${Math.random().toString(36).slice(2)}`;
-  }
+
 
 
 
@@ -42,7 +38,6 @@ const AddExpenseCard = () => {
       title, 
       amount, 
       category, 
-      id: generateId()
     };
 
     push(ref(db, `users/${userId}/expenses`), newExpense);
@@ -71,12 +66,12 @@ const AddExpenseCard = () => {
               </a>
             </div>
             <div className="md:ml-auto py-2 md:py-0 w-full md:w-auto text-center md:text-right dark:bg-black dark:text-white">
-              <Link
+              {/* <Link
                 to="/userprofile"
                 className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 Profile
-              </Link>
+              </Link> */}
 
               <Link
                 to="/expenseList"

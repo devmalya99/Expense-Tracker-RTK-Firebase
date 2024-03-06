@@ -15,6 +15,7 @@ const UserProfile = () => {
     setFullName("");
     setProfilePhoto("");
   };
+  
 
 
   return (

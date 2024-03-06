@@ -30,7 +30,7 @@ const expenseSlice = createSlice({
         state.expensesArr[reqIndex].category=category
 
       }
-
+      console.log("Updated State: ", state.expensesArr[reqIndex]); // Add this log
 
     }
   }
