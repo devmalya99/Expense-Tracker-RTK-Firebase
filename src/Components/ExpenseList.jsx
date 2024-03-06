@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { delete_Expense } from "../ReduxStore/Slices/expenseSlice";
 import UpdateTaskPopup from "./UpdateTaskPopup";
 import ThemeButton from "./Buttons/ThemeButton";
-
+import { onValue, ref } from "firebase/database";
+import {FirebaseAuthentication} from "../Firebase/FirebaseConfig"
+import { getDatabase } from "firebase/database";
 const ExpenseList = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
@@ -13,7 +15,8 @@ const ExpenseList = () => {
   const [currentTaskId, setCurrentTaskId] = useState(null);
   const [premium, setPremium] = useState(false);
 
-  const expenses = useSelector((state) => state.ExpReducer.expensesArr);
+  // The initial state for expenses is an empty array
+  const [expenses, setExpenses] = useState([]);
 
   console.log(expenses);
   console.log(typeof expenses);
@@ -63,6 +66,28 @@ const ExpenseList = () => {
     
     document.body.removeChild(link);
   };
+
+  useEffect(() => {
+    const userId = FirebaseAuthentication.currentUser.uid;
+    const db = getDatabase();
+    const expensesRef = ref(db, `users/${userId}/expenses`);
+    
+
+    // The snapshot provides access to the data. 
+    onValue(expensesRef , (snapshot)=>{
+      const data = snapshot.val();
+      if(data){
+         // Create an array from the returned object for rendering
+         setExpenses(Object.keys(data).map((key) => ({id: key, ...data[key]})));
+
+      }
+      else {
+        // If there are no expenses, set expenses to an empty array
+        setExpenses([]);
+      }
+
+    });
+  })
 
   return (
     <>

@@ -1,5 +1,6 @@
 
-
+import { getDatabase, ref, push } from "firebase/database";
+import { FirebaseAuthentication } from "../Firebase/FirebaseConfig";
 import { useState} from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import { useDispatch } from 'react-redux';
@@ -33,13 +34,20 @@ const AddExpenseCard = () => {
       return
     }
 
+    const db = getDatabase();
+    const userId = FirebaseAuthentication.currentUser.uid;
+     
 
-    dispatch(addExpense(
-      {title, 
-        amount, 
-        category, 
-        id: generateId()
-      }));
+    let newExpense = {
+      title, 
+      amount, 
+      category, 
+      id: generateId()
+    };
+
+    push(ref(db, `users/${userId}/expenses`), newExpense);
+
+    dispatch(addExpense( newExpense));
 
     
     setTitle('');
