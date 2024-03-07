@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import ThemeButton from './Buttons/ThemeButton';
 import { addExpense } from '../ReduxStore/Slices/expenseSlice';
 import LogoutButton from './Buttons/LogoutButton';
-
+import VerifyEmail from "./Buttons/VerifyEmail";
 const AddExpenseCard = () => {
 
 
@@ -79,6 +79,7 @@ const AddExpenseCard = () => {
               >
                 Expenses
               </Link>
+              <VerifyEmail/>
 
 
               <LogoutButton/>
