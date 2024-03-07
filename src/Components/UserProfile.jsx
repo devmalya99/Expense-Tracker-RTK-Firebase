@@ -1,19 +1,90 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
+import { FirebaseAuthentication } from "../Firebase/FirebaseConfig";
+import axios from 'axios';
+import LogoutButton from './Buttons/LogoutButton';
+const API_KEY = 'AIzaSyA5AMoLCs0LylGNaa_jY7Vk_6PdBeULeMA';
+const UPDATE_PROFILE_REQUEST =`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`;
+
+
 const UserProfile = () => {
 
     const [fullName, setFullName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
+  const [user, setUser] = useState(null);
 
+  //Fetch user details if exists
+
+
+  useEffect(()=>{
+    if(FirebaseAuthentication.currentUser){
+      setFullName(FirebaseAuthentication.currentUser.displayName);
+      setProfilePhoto(FirebaseAuthentication.currentUser.photoURL);
+    }
+    
+  },[])
+
+
+  useEffect( ()=>{
+    async function updateUserDeatils(){
+      const idToken =  FirebaseAuthentication.currentUser?.getIdToken(true);
+      
+      // Log the ID token
+      console.log(`idToken: ${idToken}`);
+
+       // Executes if idToken exists 
+
+       if(idToken){
+        //set user state
+        setUser(FirebaseAuthentication.currentUser);
+        setFullName(FirebaseAuthentication.currentUser.displayName);
+        setProfilePhoto(FirebaseAuthentication.currentUser.photoURL);
+       }
+    }
+    updateUserDeatils();
+    console.log(user)
+
+  },[])
  
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
+    if(!fullName || !profilePhoto) {
+      alert("Please enter full name and profile photo");
+      return;
+    }
+    
+    try {
+      // get the current user's ID token
+      const idToken = await FirebaseAuthentication.currentUser.getIdToken(true);
+  
+      const response = await axios.post(UPDATE_PROFILE_REQUEST, {
+          idToken, 
+          displayName: fullName,
+          photoUrl: profilePhoto,
+          returnSecureToken: true
+      },{
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+  
+      // Set state
+      setFullName(response.data.displayName);
+      setProfilePhoto(response.data.photoUrl);
+      console.log('User profile response:', response.data);
+  
+      alert('Profile updated successfully!');
+      } catch (error) {
+          console.error(error);
+      }
+  
+
     
     alert("Profile updated successfully!");
 
-    setFullName("");
-    setProfilePhoto("");
+
   };
   
 
@@ -46,11 +117,7 @@ const UserProfile = () => {
               >
                 View Expense
               </Link>
-              <button
-                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 mt-2 md:mt-0 shadow-xl bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Logout
-              </button>
+             <LogoutButton/>
             </div>
           </div>
         </div>
@@ -60,6 +127,9 @@ const UserProfile = () => {
 
       <div className="p-8 bg-gray-200 dark:bg-black dark:text-white">
       <h1 className="text-2xl font-bold mb-4">Contact Details</h1>
+      <div>
+        <img src={profilePhoto} alt="Profile" className="w-21 h-20 rounded-full" />
+      </div>
       <form onSubmit={handleProfileUpdate}>
         <div className="mb-4">
           <label
