@@ -61,8 +61,8 @@ const Signup = () => {
             width="740"
             height="582"
           />
-          <div className="bg-white w-full max-w-2xl p-6 m-4 rounded-lg  dark:bg-gray-800 dark:border dark:border-gray-700 md:mt-0 sm:max-w-md xl:p-0">
-            <h1>Sign Up</h1>
+          <div className="bg-white w-full max-w-2xl p-6 m-4 rounded-lg  dark:bg-black  md:mt-0 sm:max-w-md xl:p-0">
+          <h2 className="font-bold text-2xl mb-5 text-gray-800 dark:text-gray-100">Signup</h2>
             {error && <p>{error}</p>}
             <form
               onSubmit={handleFormSubmit}

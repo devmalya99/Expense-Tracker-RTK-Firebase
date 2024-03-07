@@ -41,11 +41,11 @@ const Header = () => {
               <div className=" p-4 text-xl text-blue-800 cursor-pointer  hover:text-2xl ">
                Contact
               </div>
-              <button className="bg-white px-4 py-2 rounded-md text-gray-800 border border-gray-400 shadow-sm hover:text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Signup
+              <button className="bg-white mr-2 px-4 py-2 rounded-md text-gray-800 border border-gray-400 shadow-sm hover:text-white hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <Link to={'/'}>Signup</Link> 
               </button>
-              <button className="white px-4 py-2 rounded-md text-gray-700 bg-gray-100 border border-transparent shadow-sm hover:text-blue-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Login
+              <button className="white px-4 ml-2 py-2 rounded-md text-gray-700 bg-gray-100 border border-transparent shadow-sm hover:text-blue-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hover:text-xl">
+              <Link to={'/login'}>Login</Link> 
               </button>
             </div>
           </div>

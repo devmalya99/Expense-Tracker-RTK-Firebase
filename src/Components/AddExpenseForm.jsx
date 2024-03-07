@@ -86,54 +86,63 @@ const AddExpenseCard = () => {
   </div>
 </header>
 
-<div className='container mx-auto mt-10 max-w-md shadow-2xl shadow-black py-6 bg-indigo-500 rounded-md dark:bg-gray-800 '>
-  <div className='p-5 rounded-md bg-white shadow-sm dark:bg-gray-900 dark:text-gray-100'>
-    <form onSubmit={handleSubmit}>
-      <label className='block mb-4'>
-        Expense Heading
-        <input
-          onChange={e => setTitle(e.target.value)}
-          value={title}
-          type='text'
-          placeholder='...Title'
-          className='w-full mt-2 p-3 bg-teal-500 dark:bg-gray-700 text-black dark:text-gray-200 rounded-lg focus:outline-none focus:shadow-outline focus:border-indigo-300'
-        />
-      </label>
-
-      <label className='block mb-4'>
-        Expense Amount
-        <input
-          onChange={e => setAmount(e.target.value)}
-          value={amount}
-          type='number'
-          placeholder='...Amount'
-          className='w-full mt-2 p-3  bg-teal-500 dark:bg-gray-700 text-black dark:text-gray-200 rounded-lg focus:outline-none focus:shadow-outline focus:border-indigo-300'
-        />
-      </label>
-
-      <div className='mb-4'>
-        <label className='block'>
-          Expense Category
-        </label>
-        <select 
-        onChange={e => setCategory(e.target.value)}
-        value={category}
-        className='block w-full mt-2  bg-teal-500 dark:bg-gray-700 text-black dark:text-gray-200 p-3 rounded-lg'>
-          <option disabled value=''>Select Category</option>
-          <option value='Food'>Food</option>
-          <option value='Utilities'>Utilities</option>
-          <option value='Entertainment'>Entertainment</option>
-          <option value='Gadgets'>Gadgets</option>
-        </select>
-      </div>
-
-      <button className='w-full mt-4 bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded' aria-label="Add Expense">
-        Add Expense
-      </button>
-    </form>
-  </div>
+<div className="container max-w-lg mx-auto p-4 md:p-8 my-10 bg-white rounded shadow-xl dark:bg-gray-800">
+    <div className='p-4'>
+        <h2 className="font-bold text-2xl mb-5 text-gray-800 dark:text-gray-100">Add Expense</h2>
+        <form onSubmit={handleSubmit}>
+            <label className="block mb-2">
+                <span className="text-gray-800 dark:text-gray-200">Expense Heading</span>
+                <input
+                onChange={e => setTitle(e.target.value)}
+                value={title}
+                type='text'
+                placeholder='Title'
+                className='text-sm mt-2 block w-full p-3 text-black border rounded focus:outline-none focus:border-indigo-500'
+                aria-label="Expense Heading"/>
+            </label>
+      
+            <label className="block mb-2">
+                <span className="text-gray-800 dark:text-gray-200">Expense Amount</span>
+                <input
+                onChange={e => setAmount(e.target.value)}
+                value={amount}
+                type='number'
+                placeholder='Amount'
+                className='text-sm mt-2 block text-black w-full p-3 border rounded focus:outline-none focus:border-indigo-500'
+                aria-label="Expense Amount"/>
+            </label>
+      
+            <div className='mb-4'>
+                <label className="block mb-2">
+                    <span className="text-gray-800 dark:text-gray-200">Expense Category</span>
+                    <select 
+                    onChange={e => setCategory(e.target.value)}
+                    value={category}
+                    className='text-sm mt-2 block w-full p-3 border rounded bg-white dark:bg-gray-700'>
+                        <option disabled value=''>Select Category</option>
+                        <option value='Rent'>Rent</option>
+<option value='Transportation'>Transportation</option>
+<option value='Healthcare'>Healthcare</option>
+<option value='Electronics'>Electronics</option>
+<option value='Groceries'>Groceries</option>
+<option value='Clothing'>Clothing</option>
+<option value='Education'>Education</option>
+<option value='PersonalCare'>Personal Care</option>
+<option value='Sports'>Sports</option>
+<option value='Kids'>Kids</option>
+<option value='Pets'>Pets</option>
+<option value='GiftsDonations'>Gifts & Donations</option>
+                    </select>
+                </label>
+            </div>
+      
+            <button className='w-full bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded' aria-label="Add Expense">
+                Add Expense
+            </button>
+        </form>
+    </div>
 </div>
-  </div>
+</div>
   );
 }
 
