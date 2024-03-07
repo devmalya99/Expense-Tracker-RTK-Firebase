@@ -6,7 +6,7 @@ import UpdateTaskPopup from "./UpdateTaskPopup";
 import ThemeButton from "./Buttons/ThemeButton";
 import { onValue, ref, remove ,getDatabase } from "firebase/database";
 import {FirebaseAuthentication} from "../Firebase/FirebaseConfig"
-
+import PremiumButton from "./Buttons/PremiumButton";
 import { addExpense } from "../ReduxStore/Slices/expenseSlice";
 
 const ExpenseList = () => {
@@ -114,110 +114,87 @@ const ExpenseList = () => {
 
   return (
     <>
-      <header className="bg-white border-b sticky top-0 z-10 p-4 dark:bg-black dark:text-white">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-x-2 lg:px-8">
-          <div className="md:flex md:items-center md:justify-between">
-            <div className="flex justify-start items-center w-full md:w-auto">
-              <a href="#" className="flex-shrink-0">
-                <span className="font-bold text-xl sm:text-3xl">
-                  <span className="text-blue-500">
-                    Welcome to Expense Tracker v1.0
-                  </span>
-                </span>
-              </a>
-            </div>
-            <div className="md:ml-auto py-2 md:py-0 w-full md:w-auto text-center md:text-right">
-              <Link
-                to="/addExpenseCard"
-                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Add Expense
-              </Link>
+  <header className="flex items-center justify-between px-6 py-4 bg-indigo-500 text-white shadow-md">
+  <div className="flex items-center justify-start space-x-6 md:space-x-12">
+    <a href="#" className="font-bold text-2xl md:text-4xl">
+      Welcome to Expense Tracker v1.0
+    </a>
+  </div>
+  <div className="hidden md:flex items-center space-x-2">
+    <Link
+      to="/addExpenseCard"
+      className="px-6 py-2 bg-white text-indigo-500 rounded-lg hover:bg-indigo-100 transition-colors"
+    >
+      Add Expense
+    </Link>
 
-              {/* <Link
-                to="/userprofile"
-                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                User Profile
-              </Link> */}
+    <Link
+      to="/userprofile"
+      className="px-6 py-2 bg-white text-indigo-500 rounded-lg hover:bg-indigo-100 transition-colors"
+    >
+      User Profile
+    </Link>
 
-              {premium && (
-                <Link
-                  to="/userprofile"
-                  className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 bg-purple-500 text-white rounded hover:bg-pink-600"
-                >
-                  Activate Premium
-                </Link>
-              )}
+    {premium && (
+      <PremiumButton className="px-6 py-2 bg-indigo-700 text-white rounded-lg hover:bg-indigo-600 transition-colors"/>
+    )}
 
-              <button
-                onClick={logout}
-                className="ml-2 md:ml-4 inline-block px-2 md:px-4 py-1 md:py-2 mt-2 md:mt-0 shadow-xl bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Logout
-              </button>
+    <button
+      onClick={logout}
+      className="px-6 py-2 bg-transparent border-2 border-white text-white rounded-lg hover:border-indigo-200 transition-colors"
+    >
+      Logout
+    </button>
 
-              {
-                premium && <ThemeButton/>
-              }
+    {premium && <ThemeButton className="transition-colors hover:text-indigo-100" />}
+  </div>
+  <div className="md:hidden">
+    <button className="block text-white hover:text-indigo-300">
+      <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
+        <path fillRule="evenodd" d="M2 4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 1 0 0-2H2V5a1 1 0 0 0-1-1z"/>
+      </svg>
+    </button>
+  </div>
+</header>
 
-              
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="display div container mx-auto mt-10 max-w-md shadow-lg dark:bg-black dark:text-white">
-        <div className="border-2 bg-blue-500 border-gray-200 p-4 rounded-md  shadow-sm dark:bg-black dark:text-white">
-          <ul>
-            {Array.isArray(expenses) &&
-              expenses.length > 0 && // Check for array and non-empty
-              expenses.map((expense) => (
-                
-                <div
-                  className="flex border-2 mt-4 border-gray-200 p-5 rounded-md bg-white shadow-sm dark:bg-black dark:text-white"
-                  key={expense.id}
-                >
-                  <li>
-                    <p>{expense.title}</p>
-                    <p>{expense.amount}</p>
-                    <p>{expense.category}</p>
-                  </li>
-                  <button
-                    onClick={() => handleEdit(expense.id)}
-                    className="ml-2 px-4 py-2 rounded-xl text-xl bg-green-600 "
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(expense.id)}
-                    className="ml-2 px-4 py-2 rounded-xl  bg-red-500 text-xl"
-                  >
-                    Delete
-                  </button>
+<div className="container mx-auto p-6 mt-8 max-w-xl shadow-md bg-white dark:bg-gray-900 rounded-md h-screen">
+    <h2 className=" mb-4 text-center font-bold dark:text-white text-4xl">List of Expenses</h2>
+    {Array.isArray(expenses) ? (
+        expenses.length > 0 ? (
+            expenses.map(expense => (
+                <div key={expense.id} className="flex flex-col bg-indigo-100 dark:bg-gray-800 rounded p-4 my-2 shadow-xl shadow-black mb-4 ">
+                    <div className="flex justify-between items-start border-b-2 border-indigo-900 pb-2 mb-2">
+    <div>
+        <h3 className="font-bold text-xl text-indigo-900 dark:text-indigo-400">{expense.title.toUpperCase()}</h3>
+        <p className="text-indigo-700 dark:text-indigo-300 mt-1">$ {expense.amount}</p>
+        <span className="inline-block bg-indigo-200 text-orange-900 dark:text-indigo-900 font-semibold px-2 rounded-full">{expense.category}</span>
+    </div>
+    <div>
+                            <button onClick={() => handleEdit(expense.id)} 
+                                    className="px-4 py-2 rounded mr-2 text-sm font-bold bg-green-600 text-white hover:bg-green-700 transition-colors">
+                                Edit
+                            </button>
+                            <button onClick={() => handleDelete(expense.id)} 
+                                    className="px-4 py-2 rounded text-sm font-bold bg-red-500 text-white hover:bg-red-700 transition-colors">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              ))}
+            ))
+        ) : (
+            <p className="text-center text-gray-500 dark:text-gray-300">No Expenses found.</p>
+        )
+    ) : null}
 
-            {Array.isArray(expenses) &&
-              expenses.length === 0 && ( // Show message if empty
-                <p>No expenses found.</p>
-              )}
-          </ul>
+    {isOpen && <UpdateTaskPopup taskId={currentTaskId} setIsOpen={setIsOpen} />}
 
-          {isOpen && (
-            <UpdateTaskPopup taskId={currentTaskId} setIsOpen={setIsOpen} />
-          )}
-        </div>
-        {
-          premium && <button 
-          onClick={handleDownload} 
-          className="p-2 ml-2 bg-pink-500 text-white rounded hover:bg-blue-600 dark:bg-blue-500  "
-          >Download Your Data</button>
-        }
-        
-      
-      </div>
+    {premium && (
+        <button onClick={handleDownload} className="block mt-8 mx-auto px-4 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+            Download Your Data
+        </button>
+    )}
+</div>
     </>
   );
 };
