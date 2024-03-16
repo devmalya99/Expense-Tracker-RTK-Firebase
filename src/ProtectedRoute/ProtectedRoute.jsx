@@ -1,26 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useContext } from 'react';
 import {FirebaseAuthentication} from '../Firebase/FirebaseConfig'
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import  {AuthContext} from '../Components/AuthContext/AuthContext';
 
 export const ProtectedRoute = ({children})=>{
 
-    const [ loading, setLoading ] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const {loading, isAuthenticated}  = useContext(AuthContext);
+  
+    const Navigate = useNavigate();
     
-    useEffect(()=>{
-        FirebaseAuthentication.onAuthStateChanged((user)=>{
-           if(user)
-           {
-            setIsAuthenticated(true);
-           }
-           else
-           {
-            setIsAuthenticated(false);
-           }
-      // loading false after checking authentication state
-      setLoading(false);
-        });
-    },[]);
+
 
 
 // While determining if user is authenticated, show loading message
